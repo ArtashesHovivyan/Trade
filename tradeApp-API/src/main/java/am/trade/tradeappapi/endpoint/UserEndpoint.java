@@ -1,21 +1,33 @@
 package am.trade.tradeappapi.endpoint;
 
 import am.trade.tradeappcommon.exeption.UserNotFoundExeption;
+import am.trade.tradeappcommon.model.User;
 import am.trade.tradeappcommon.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/users")
 public class UserEndpoint {
 
     private UserService userService;
+    private PasswordEncoder passwordEncoder;
 
-    public UserEndpoint(UserService userService) {
+    public UserEndpoint(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @PostMapping
+    public ResponseEntity saveUser(@RequestBody User user) {
+        if (userService.findUserByLogin(user.getLogin())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.registerUser(user);
+        return ResponseEntity.ok(user.getId());
     }
 
     @GetMapping("/{id}")
