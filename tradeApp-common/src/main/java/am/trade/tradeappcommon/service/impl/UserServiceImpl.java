@@ -6,6 +6,7 @@ import am.trade.tradeappcommon.repository.UserRepository;
 import am.trade.tradeappcommon.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,8 +29,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByLogin(String login) {
+        return userRepository.getByLogin(login);
+    }
+
+
+    @Override
     public User findById(int id) throws UserNotFoundExeption {
         return userRepository.findById(id).orElseThrow(UserNotFoundExeption::new);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteById(int id) {
+        userRepository.deleteById(id);
     }
 
 
