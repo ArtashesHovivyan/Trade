@@ -11,4 +11,8 @@ public interface CategoryService {
     List<Category> findAll();
 
     boolean getCategoryByName(String name);
+
+    Category findCategoryById(int id);
+
+    void deleteById(int id);
 }

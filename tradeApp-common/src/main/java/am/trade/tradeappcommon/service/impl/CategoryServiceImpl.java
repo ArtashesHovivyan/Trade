@@ -29,4 +29,15 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean getCategoryByName(String name) {
         return categoryRepository.getByName(name).isPresent();
     }
+
+    @Override
+    public Category findCategoryById(int id) {
+        return categoryRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        categoryRepository.deleteById(id);
+    }
+
 }
