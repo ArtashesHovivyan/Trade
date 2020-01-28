@@ -1,5 +1,6 @@
 package am.trade.tradeappapi.endpoint;
 
+import am.trade.tradeappcommon.exeption.CategoryNotFoundExeption;
 import am.trade.tradeappcommon.model.Category;
 import am.trade.tradeappcommon.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,12 @@ public class CategoryEndpoint {
     }
 
     @GetMapping
-    public List<Category> categories(){
+    public List<Category> categories() {
         return categoryService.findAll();
     }
 
     @PostMapping
-    public ResponseEntity saveUser(@RequestBody Category category) {
+    public ResponseEntity saveCategory(@RequestBody Category category) {
         if (categoryService.getCategoryByName(category.getName())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -32,4 +33,20 @@ public class CategoryEndpoint {
         return ResponseEntity.ok(category.getId());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity getCategoryById(@PathVariable("id") int id) {
+        if (categoryService.findCategoryById(id) != null) {
+            return ResponseEntity.ok(categoryService.findCategoryById(id));
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCategory(@PathVariable("id") int id) {
+        if (categoryService.findCategoryById(id) == null){
+            return ResponseEntity.notFound().build();
+        }
+        categoryService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }

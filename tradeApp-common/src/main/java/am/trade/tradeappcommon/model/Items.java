@@ -23,6 +23,8 @@ public class Items {
     private double count;
     @Column(name = "min_count")
     private double minCount;
+    @Column
+    private String barcode;
     @ManyToOne
     private Category category;
     @Column(name = "price_in")
