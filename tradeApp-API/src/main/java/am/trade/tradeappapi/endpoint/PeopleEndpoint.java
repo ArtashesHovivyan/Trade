@@ -48,5 +48,4 @@ public class PeopleEndpoint {
         }
         return ResponseEntity.ok(peopleService.getByEmailOrPhone(name, name));
     }
-
 }

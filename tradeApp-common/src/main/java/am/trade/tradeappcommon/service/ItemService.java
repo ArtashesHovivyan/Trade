@@ -21,4 +21,5 @@ public interface ItemService {
     Items getItemsByTitleOrBarcode(String title, String barcode);
 
     List<Items> findByCategory(Category category);
+
 }

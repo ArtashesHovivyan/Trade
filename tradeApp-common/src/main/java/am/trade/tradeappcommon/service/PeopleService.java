@@ -16,4 +16,6 @@ public interface PeopleService {
 
     People getByEmailOrPhone(String email, String Phone);
 
+    People getPeopleByPhone(String phone);
+
 }

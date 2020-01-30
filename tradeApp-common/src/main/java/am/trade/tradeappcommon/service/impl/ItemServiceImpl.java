@@ -41,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Items getItemById(int id) {
-        return itemRepository.getItemById(id);
+        return itemRepository.getOne(id);
     }
 
     @Override

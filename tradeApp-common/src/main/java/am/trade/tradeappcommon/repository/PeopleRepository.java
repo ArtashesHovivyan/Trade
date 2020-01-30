@@ -10,4 +10,8 @@ public interface PeopleRepository extends JpaRepository<People, Integer> {
     People findById(int id);
 
     People getPeopleByEmailOrPhone(String email, String phone);
+
+    People getPeopleByPhone(String phone);
+
+
 }
