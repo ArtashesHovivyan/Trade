@@ -66,4 +66,5 @@ public class ItemEndpoint {
         }
         return ResponseEntity.ok(itemService.findByCategory(categoryService.findCategoryById(category)));
     }
+
 }

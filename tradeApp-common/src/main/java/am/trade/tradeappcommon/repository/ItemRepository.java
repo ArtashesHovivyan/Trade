@@ -11,8 +11,6 @@ public interface ItemRepository extends JpaRepository<Items, Integer> {
 
     Optional<Items> findByTitleOrBarcode(String title, String barcode);
 
-    Items getItemById(int id);
-
     Items getItemsByTitleOrBarcode(String title, String barcode);
 
     List<Items> findAllByCategory(Category category);

@@ -42,4 +42,9 @@ public class PeopleServiceImpl implements PeopleService {
        return peopleRepository.getPeopleByEmailOrPhone(email, phone);
     }
 
+    @Override
+    public People getPeopleByPhone(String phone) {
+        return peopleRepository.getPeopleByPhone(phone);
+    }
+
 }

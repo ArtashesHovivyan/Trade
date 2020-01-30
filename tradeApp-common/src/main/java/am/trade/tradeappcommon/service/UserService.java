@@ -19,5 +19,4 @@ public interface UserService {
 
     void deleteById(int id);
 
-
 }
