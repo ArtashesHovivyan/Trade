@@ -36,15 +36,15 @@ public class PeopleServiceImpl implements PeopleService {
         return peopleRepository.findById(id);
     }
 
-
-    @Override
-    public People getByEmailOrPhone(String email, String phone) {
-       return peopleRepository.getPeopleByEmailOrPhone(email, phone);
-    }
-
     @Override
     public People getPeopleByPhone(String phone) {
         return peopleRepository.getPeopleByPhone(phone);
     }
+
+    @Override
+    public People findPeopleByEmailOrPhone(String search) {
+        return peopleRepository.findByEmailOrPhone(search);
+    }
+
 
 }

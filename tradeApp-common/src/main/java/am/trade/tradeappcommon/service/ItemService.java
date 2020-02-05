@@ -8,9 +8,10 @@ import java.util.Optional;
 
 public interface ItemService {
 
-    void addItem(Items item);
+    void saveItem(Items item);
 
     Optional<Items> findItemByTitleOrBarcode(String title, String barcode);
+    Optional<Items> findItemById(int id);
 
     List<Items> findAll();
 
@@ -18,8 +19,7 @@ public interface ItemService {
 
     Items getItemById(int id);
 
-    Items getItemsByTitleOrBarcode(String title, String barcode);
-
     List<Items> findByCategory(Category category);
+
 
 }

@@ -18,7 +18,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void addItem(Items item) {
+    public void saveItem(Items item) {
         itemRepository.save(item);
 
     }
@@ -27,6 +27,11 @@ public class ItemServiceImpl implements ItemService {
     public Optional<Items> findItemByTitleOrBarcode(String title, String barcode) {
         Optional<Items> items = itemRepository.findByTitleOrBarcode(title, barcode);
         return items;
+    }
+
+    @Override
+    public Optional<Items> findItemById(int id) {
+        return itemRepository.findById(id);
     }
 
     @Override
@@ -42,11 +47,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Items getItemById(int id) {
         return itemRepository.getOne(id);
-    }
-
-    @Override
-    public Items getItemsByTitleOrBarcode(String title, String barcode) {
-        return itemRepository.getItemsByTitleOrBarcode(title, barcode);
     }
 
     @Override

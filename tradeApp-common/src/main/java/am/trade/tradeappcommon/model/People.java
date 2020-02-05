@@ -3,8 +3,10 @@ package am.trade.tradeappcommon.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor

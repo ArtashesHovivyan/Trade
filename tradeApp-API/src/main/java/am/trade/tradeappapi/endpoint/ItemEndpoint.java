@@ -1,5 +1,6 @@
 package am.trade.tradeappapi.endpoint;
 
+import am.trade.tradeappapi.dto.ItemMainDto;
 import am.trade.tradeappcommon.model.Items;
 import am.trade.tradeappcommon.service.CategoryService;
 import am.trade.tradeappcommon.service.ItemService;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,13 +28,12 @@ public class ItemEndpoint {
         if (itemService.findItemByTitleOrBarcode(items.getTitle(), items.getBarcode()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else
-            itemService.addItem(items);
+            itemService.saveItem(items);
         return ResponseEntity.ok(items.getId());
     }
 
     @GetMapping
     public List<Items> items() {
-//        Add items DTO
         System.out.println(itemService.findAll());
         return itemService.findAll();
     }
@@ -50,21 +51,42 @@ public class ItemEndpoint {
         }
         return ResponseEntity.notFound().build();
     }
-
-    @GetMapping("/findItems/{name}")
-    public ResponseEntity searchByTitleOrBarcode(@PathVariable("name") String name) {
-        if (itemService.getItemsByTitleOrBarcode(name, name) == null) {
-            return ResponseEntity.notFound().build();
+// All items by Id, title or barcode with ItemMainDto
+    @GetMapping("/findAllItems/{name}")
+    public ResponseEntity searchByIdTitleOrBarcode(@PathVariable("name") String name) {
+        List<Items> allItems = itemService.findAll();
+        List<ItemMainDto> findItem = new ArrayList<>();
+        for (Items allItem : allItems) {
+            if (allItem.getTitle().contains(name) || allItem.getBarcode().equals(name) || String.valueOf(allItem.getId()).contains(name)) {
+                findItem.add(itemMaimDto(allItem));
+            }
         }
-        return ResponseEntity.ok(itemService.getItemsByTitleOrBarcode(name, name));
+        if (findItem.size() != 0) {
+            return ResponseEntity.ok(findItem);
+        }
+        return ResponseEntity.notFound().build();
     }
 
+    //    All items by category with ItemMAinDto
     @GetMapping("/findByCategory/{id}")
     public ResponseEntity findByCategory(@PathVariable("id") int category) {
         if (itemService.findByCategory(categoryService.findCategoryById(category)) == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(itemService.findByCategory(categoryService.findCategoryById(category)));
+        List<ItemMainDto> itemMainDtos = new ArrayList<>();
+        for (Items items : itemService.findByCategory(categoryService.findCategoryById(category))) {
+           itemMainDtos.add(itemMaimDto(items));
+        }
+        return ResponseEntity.ok(itemMainDtos);
     }
 
+
+    public ItemMainDto itemMaimDto (Items items){
+        return ItemMainDto.builder()
+                .id(items.getId())
+                .title(items.getTitle())
+                .count(items.getCount())
+                .priceOut(items.getPriceOut())
+                .build();
+    }
 }

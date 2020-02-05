@@ -12,8 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "order_item")
-public class OrderItem {
+@Table(name = "incame_item")
+public class InCameItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
@@ -22,7 +22,7 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Items items;
     @ManyToOne
-    private Order order;
+    private InCame inCame;
     @Column
     private double count;
 }
