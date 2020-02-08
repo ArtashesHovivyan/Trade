@@ -5,10 +5,6 @@ import am.trade.tradeappcommon.repository.OrderRepository;
 import am.trade.tradeappcommon.service.OrderService;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -32,9 +28,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> searchByDate(Date creationDateTime) {
-        System.out.println(creationDateTime);
-        return orderRepository.searchByDate(creationDateTime);
+    public List<Order> findAllByUserId(int user) {
+        return orderRepository.findAllByUserId(user);
     }
 
     @Override

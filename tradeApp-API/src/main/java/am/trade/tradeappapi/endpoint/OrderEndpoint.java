@@ -77,19 +77,6 @@ public class OrderEndpoint {
         return orderService.findAllOrders();
     }
 
-//    @GetMapping("/searchbypeople/{name}")
-//    public ResponseEntity searchByPeople(@PathVariable("name") String name){
-//
-//    }
-
-    @GetMapping("/searchbydate/{date}")
-    public ResponseEntity searchByDate(@PathVariable("date") String date) throws ParseException {
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<Order> result = orderService.searchByDate(
-                dateFormat.parse(date));
-        return ResponseEntity.ok(result);
-    }
 
     @GetMapping("/range/{date}")
     public ResponseEntity searchByDateRange(@PathVariable("date") String date) throws ParseException {

@@ -10,11 +10,9 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
-    @Query(value = "select a from Order a where a.date >= :creationDateTime")
-    List<Order> searchByDate(
-            @Param("creationDateTime") Date creationDateTime);
+    List<Order> findAllByUserId(int userId);
 
-    @Query(value = "select a from Order a where a.date between :toDate and :fromDate")
+    @Query(value = "SELECT * FROM orders a WHERE date BETWEEN :toDate AND :fromDate + interval 1 day", nativeQuery = true)
     List<Order> searchByDateRange(
             @Param("toDate") Date toDateTime,
             @Param("fromDate") Date fromDateTime);
