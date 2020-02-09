@@ -54,5 +54,10 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAllByCategory(category);
     }
 
+    @Override
+    public List<Items> findAllById(int id) {
+        return itemRepository.findAllById(id);
+    }
+
 
 }

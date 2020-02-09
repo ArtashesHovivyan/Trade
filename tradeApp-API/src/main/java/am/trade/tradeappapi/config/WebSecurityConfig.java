@@ -43,7 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/rest/category").hasAnyAuthority("admin")
                 .antMatchers(HttpMethod.POST, "/rest/category/{id}").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/rest/category/{id}").hasAnyAuthority("admin")
-                .antMatchers(HttpMethod.POST, "/rest/users").permitAll()
                 .antMatchers(HttpMethod.PUT, "/rest/users/addImage/{userId}").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/rest/users/{id}").hasAnyAuthority("admin")
 //                .antMatchers(HttpMethod.GET, "/rest/people/{id}").permitAll()

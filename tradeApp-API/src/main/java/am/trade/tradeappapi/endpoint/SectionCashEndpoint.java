@@ -84,7 +84,6 @@ public class SectionCashEndpoint {
         fromSectionCash.setIncoming(fromSectionCash.getIncoming() - fromOutComing);
         fromSectionCash.setOutcoming(fromOutComing);
         sectionCashService.save(fromSectionCash);
-
         return ResponseEntity.ok("Transfer are saved");
 //        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }

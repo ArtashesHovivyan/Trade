@@ -20,6 +20,9 @@ public interface ItemService {
     Items getItemById(int id);
 
     List<Items> findByCategory(Category category);
+    List<Items> findAllById(int id);
+
+
 
 
 }

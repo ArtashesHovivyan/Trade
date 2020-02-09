@@ -15,4 +15,5 @@ public interface ItemRepository extends JpaRepository<Items, Integer> {
     Optional<Items> findById(int id);
 
     List<Items> findAllByCategory(Category category);
+    List<Items> findAllById(int id);
 }

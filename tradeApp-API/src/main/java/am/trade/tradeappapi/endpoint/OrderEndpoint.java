@@ -1,6 +1,8 @@
 package am.trade.tradeappapi.endpoint;
 
 import am.trade.tradeappapi.dto.AddOrderDto;
+import am.trade.tradeappapi.dto.FindOrderDto;
+import am.trade.tradeappapi.dto.ItemMainDto;
 import am.trade.tradeappapi.dto.OrderItemDto;
 import am.trade.tradeappapi.security.CurrentUser;
 import am.trade.tradeappcommon.model.*;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/orders")
@@ -82,9 +87,32 @@ public class OrderEndpoint {
     public ResponseEntity searchByDateRange(@PathVariable("date") String date) throws ParseException {
         String[] tmp = date.split(",");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<Order> result = orderService.searchByDateRange(
-                dateFormat.parse(tmp[0]),
-                dateFormat.parse(tmp[1]));
-        return ResponseEntity.ok(result);
+        List<FindOrderDto> findOrderDtoList = new LinkedList<>();
+        List<Order> result = orderService.searchByDateRange(dateFormat.parse(tmp[0]), dateFormat.parse(tmp[1]));
+
+        for (Order order : result) {
+            List<OrderItem> byOrderId = orderItemService.findByOrderId(order.getId());
+            double orderSum = 0.0;
+//            Ապրանքի լիստ
+            List<ItemMainDto> itemMainDtoList = new ArrayList<>();
+            double orderItemSum = 0.0;
+            for (OrderItem orderItem : byOrderId) {
+                ItemMainDto itemMainDto = new ItemMainDto();
+                itemMainDto.setId(orderItem.getItems().getId());
+                itemMainDto.setCount(orderItem.getCount());
+                itemMainDto.setTitle(orderItem.getItems().getTitle());
+                itemMainDto.setPriceOut(orderItem.getItems().getPriceOut());
+                itemMainDtoList.add(itemMainDto);
+                orderItemSum += orderItem.getItems().getPriceOut()*orderItem.getCount();
+            }
+//            Ապրանքի լիստ վերջ
+            orderSum += orderItemSum;
+            FindOrderDto findOrderDto = new FindOrderDto();
+            findOrderDto.setDate(order.getDate());
+            findOrderDto.setItemMainDtos(itemMainDtoList);
+            findOrderDto.setOrderSum(orderSum);
+            findOrderDtoList.add(findOrderDto);
+        }
+        return ResponseEntity.ok(findOrderDtoList);
     }
 }
