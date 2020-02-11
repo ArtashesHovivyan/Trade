@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/rest/items")
 public class ItemEndpoint {
@@ -33,9 +33,17 @@ public class ItemEndpoint {
     }
 
     @GetMapping
-    public List<Items> items() {
-        System.out.println(itemService.findAll());
-        return itemService.findAll();
+    public List<ItemMainDto> allItemsforMain() {
+        List<ItemMainDto> itemMainDtoList = new ArrayList<>();
+        for (Items items : itemService.findAll()) {
+            ItemMainDto itemMainDto = new ItemMainDto();
+            itemMainDto.setId(items.getId());
+            itemMainDto.setTitle(items.getTitle());
+            itemMainDto.setPriceOut(items.getPriceOut());
+            itemMainDto.setCount(items.getCount());
+            itemMainDtoList.add(itemMainDto);
+        }
+        return itemMainDtoList;
     }
 
     @DeleteMapping("/{id}")

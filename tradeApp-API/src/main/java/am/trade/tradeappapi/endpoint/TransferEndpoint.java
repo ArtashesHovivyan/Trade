@@ -7,14 +7,11 @@ import am.trade.tradeappcommon.service.SectionCashService;
 import am.trade.tradeappcommon.service.TransferService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/rest/transfer")
 public class TransferEndpoint {

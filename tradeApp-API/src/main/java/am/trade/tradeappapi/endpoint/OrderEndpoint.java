@@ -12,6 +12,7 @@ import am.trade.tradeappcommon.service.OrderService;
 import am.trade.tradeappcommon.service.PeopleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/rest/orders")
 public class OrderEndpoint {
 
@@ -103,7 +105,7 @@ public class OrderEndpoint {
                 itemMainDto.setTitle(orderItem.getItems().getTitle());
                 itemMainDto.setPriceOut(orderItem.getItems().getPriceOut());
                 itemMainDtoList.add(itemMainDto);
-                orderItemSum += orderItem.getItems().getPriceOut()*orderItem.getCount();
+                orderItemSum += orderItem.getItems().getPriceOut() * orderItem.getCount();
             }
 //            Ապրանքի լիստ վերջ
             orderSum += orderItemSum;
