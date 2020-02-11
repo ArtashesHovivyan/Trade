@@ -1,6 +1,6 @@
 package am.trade.tradeappcommon.model;
 
-public enum UserType {
+public enum PeopleType {
 
     BUYER, SUPPLIER;
 

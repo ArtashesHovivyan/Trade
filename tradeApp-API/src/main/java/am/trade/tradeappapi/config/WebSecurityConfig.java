@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -30,6 +32,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -39,17 +53,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/rest/users/{id}").hasAnyAuthority("admin")
-                .antMatchers(HttpMethod.POST, "/rest/category").hasAnyAuthority("admin")
-                .antMatchers(HttpMethod.POST, "/rest/category/{id}").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/rest/category/{id}").hasAnyAuthority("admin")
-                .antMatchers(HttpMethod.POST, "/rest/users").permitAll()
-                .antMatchers(HttpMethod.PUT, "/rest/users/addImage/{userId}").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/rest/users/{id}").hasAnyAuthority("admin")
-//                .antMatchers(HttpMethod.GET, "/rest/people/{id}").permitAll()
-//                .antMatchers(HttpMethod.GET, "/rest/people/phoneoremail/{name}").permitAll()
-                .antMatchers(HttpMethod.POST, "/rest/people").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/rest/people/*").permitAll()
+//                .antMatchers(HttpMethod.GET, "/rest/users/{id}").hasAnyAuthority("admin")
+//                .antMatchers(HttpMethod.GET, "/rest/orders").hasAnyAuthority("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/rest/users").hasAnyAuthority("ADMIN")
+//                .antMatchers(HttpMethod.POST, "/rest/category").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.POST, "/rest/category/{id}").permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/rest/category/{id}").hasAnyAuthority("admin")
+//                .antMatchers(HttpMethod.PUT, "/rest/users/addImage/{userId}").hasAnyAuthority("USER", "ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/rest/users/{id}").hasAnyAuthority("admin")
+////                .antMatchers(HttpMethod.GET, "/rest/people/{id}").permitAll()
+////                .antMatchers(HttpMethod.GET, "/rest/people/phoneoremail/{name}").permitAll()
+//                .antMatchers(HttpMethod.POST, "/rest/people").permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/rest/people/*").permitAll()
                 .anyRequest().permitAll();
 
         // Custom JWT based security filter
@@ -60,18 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().cacheControl();
     }
 
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
-    }
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {

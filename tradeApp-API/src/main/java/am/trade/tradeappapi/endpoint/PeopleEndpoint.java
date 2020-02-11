@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/rest/people")
 public class PeopleEndpoint {
@@ -41,11 +41,20 @@ public class PeopleEndpoint {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    @GetMapping("/phoneoremail/{name}")
-    public ResponseEntity getPeopleByMailOrPhone(@PathVariable("name") String name) {
-        if (peopleService.getByEmailOrPhone(name, name) == null) {
+    @GetMapping("/phone/{phone}")
+    public ResponseEntity getPeopleByPhone(@PathVariable("phone") String name) {
+        if (peopleService.getPeopleByPhone(name) == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        return ResponseEntity.ok(peopleService.getByEmailOrPhone(name, name));
+        return ResponseEntity.ok(peopleService.getPeopleByPhone(name));
+    }
+
+//    Փնտրել մարդուն իր հեռախոսահամարով կամ էլեկտրոնային հասցեով
+    @GetMapping("/phoneoremail/{search}")
+    public ResponseEntity getPeopleByPhoneOrEmail(@PathVariable("search") String name) {
+        if (peopleService.findPeopleByEmailOrPhone(name) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(peopleService.findPeopleByEmailOrPhone(name));
     }
 }

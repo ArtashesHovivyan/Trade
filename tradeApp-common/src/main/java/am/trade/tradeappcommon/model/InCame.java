@@ -6,17 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.util.Date;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "in_came")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Order {
+public class InCame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

@@ -14,8 +14,8 @@ public interface PeopleService {
 
     People findPeopleById(int id);
 
-    People getByEmailOrPhone(String email, String Phone);
-
     People getPeopleByPhone(String phone);
+
+    People findPeopleByEmailOrPhone(String search);
 
 }

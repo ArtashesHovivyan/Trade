@@ -6,33 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.util.Date;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "transfer")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Order {
+public class Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @ManyToOne
-    private User user;
+    private User to;
+    @ManyToOne
+    private People toPeople;
+    @ManyToOne
+    private User from;
+    @Column
+    private double price;
     @Column
     private Date date;
-    @ManyToOne
-    private People people;
-
-//    @ManyToMany(cascade = {CascadeType.ALL})
-//    @JoinTable(
-//            name = "order_item",
-//            joinColumns = {@JoinColumn(name = "order_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "item_id")}
-//    )
-//    List<Items> itemsList = new ArrayList<>();
 }

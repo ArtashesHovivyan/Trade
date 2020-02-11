@@ -3,8 +3,10 @@ package am.trade.tradeappcommon.service.impl;
 import am.trade.tradeappcommon.model.Order;
 import am.trade.tradeappcommon.repository.OrderRepository;
 import am.trade.tradeappcommon.service.OrderService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,19 +29,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getById(int id) {
-        return orderRepository.getOne(id);
+    public List<Order> findAllByUserId(int user) {
+        return orderRepository.findAllByUserId(user);
     }
 
     @Override
-    public Order findOrderByPeopleId(int id) {
-        return orderRepository.findByPeopleId(id);
+    public List<Order> searchByDateRange(Date toDate, Date fromDate) {
+        return orderRepository.searchByDateRange(toDate, fromDate);
     }
-
-    @Override
-    public List<Order> findAllByPeopleId(int id) {
-        return orderRepository.findAllByPeopleId(id);
-    }
-
 
 }

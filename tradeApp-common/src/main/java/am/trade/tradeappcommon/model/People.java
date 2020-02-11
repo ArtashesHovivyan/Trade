@@ -28,6 +28,6 @@ public class People {
     private String address;
     @Column
     @Enumerated(EnumType.STRING)
-    private UserType userType = UserType.BUYER;
+    private PeopleType userType = PeopleType.BUYER;
 
 }

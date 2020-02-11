@@ -1,12 +1,12 @@
 package am.trade.tradeappcommon.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.util.Date;
 
 
@@ -14,25 +14,20 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "section_cash")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Order {
+public class SectionCash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @ManyToOne
     private User user;
     @Column
+    private double incoming;
+    @Column
+    private double outcoming;
+    @Column
+    private String description;
+    @Column
     private Date date;
-    @ManyToOne
-    private People people;
-
-//    @ManyToMany(cascade = {CascadeType.ALL})
-//    @JoinTable(
-//            name = "order_item",
-//            joinColumns = {@JoinColumn(name = "order_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "item_id")}
-//    )
-//    List<Items> itemsList = new ArrayList<>();
 }
