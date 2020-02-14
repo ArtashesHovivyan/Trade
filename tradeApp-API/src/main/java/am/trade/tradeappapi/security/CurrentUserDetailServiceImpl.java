@@ -21,17 +21,24 @@ public class CurrentUserDetailServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.getUserByLogin(s)
-                .orElseThrow(() -> new UsernameNotFoundException("Email " + s + " not found"));
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
-                getAuthorities(user));
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepository.getUserByLogin(userName)
+                .orElseThrow(() -> new UsernameNotFoundException("Email " + userName + " not found"));
+        return new CurrentUser(user);
+
     }
+//public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+//    User user = userRepository.getUserByLogin(s).orElse(null);
+//    if (user == null) {
+//        throw new UsernameNotFoundException("User not found");
+//    }
+//    return new CurrentUser(user);
+//}
 
 
-    private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        String[] userRoles = user.getRoles().stream().map((role) -> role.getName()).toArray(String[]::new);
-        Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
-        return authorities;
-    }
+//    private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
+//        String[] userRoles = user.getRoles().stream().map((role) -> role.getName()).toArray(String[]::new);
+//        Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
+//        return authorities;
+//    }
 }

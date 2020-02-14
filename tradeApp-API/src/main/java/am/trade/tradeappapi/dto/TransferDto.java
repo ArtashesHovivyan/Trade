@@ -15,3 +15,9 @@ public class TransferDto {
     private Double outComing;
     public String description;
 }
+
+//{
+//        "sectionId": "59",
+//        "outComing": "4000",
+//        "description": "perevovd"
+//        }

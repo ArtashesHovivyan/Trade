@@ -46,13 +46,15 @@ public class InCameEndpoint {
             if (!itemService.findItemById(orderItemDto.getItemId()).isPresent()) {
                 return ResponseEntity.notFound().build();
             }
-            inCameItem.setItems(itemService.getItemById(orderItemDto.getItemId()));
+            Items items = itemService.getItemById(orderItemDto.getItemId());
+            inCameItem.setItems(items);
             inCameItem.setCount(orderItemDto.getCount());
             inCameItem.setInCame(inCame);
-            double itemCount = itemService.getItemById(orderItemDto.getItemId()).getCount();
+            double itemCount = items.getCount();
             double count = itemCount + inCameItem.getCount();
             inCameService.addInCame(inCame);
-            Items items = itemService.getItemById(orderItemDto.getItemId());
+            double priceIn = items.getPriceIn();
+            double priceOut = items.getPriceOut();
             items.setCount(count);
             itemService.saveItem(items);
             inCameItemService.saveInCameItem(inCameItem);
@@ -95,3 +97,48 @@ public class InCameEndpoint {
         return inCameService.findAllInCames();
     }
 }
+
+
+//    @PostMapping
+//    public ResponseEntity saveInCameItem(@RequestBody AddOrderDto addOrderDto, @AuthenticationPrincipal CurrentUser currentUser) {
+//        InCame inCame = new InCame();
+//        inCame.setUser(currentUser.getUser());
+//        People peopleByPhone = peopleService.getPeopleByPhone(addOrderDto.getPhoneNumber());
+//        inCame.setPeople(peopleByPhone);
+//        double outComingCash = 0.0;
+//        for (OrderItemDto orderItemDto : addOrderDto.getOrderItemDtos()) {
+//            InCameItem inCameItem = new InCameItem();
+//            if (!itemService.findItemById(orderItemDto.getItemId()).isPresent()) {
+//                return ResponseEntity.notFound().build();
+//            }
+//            inCameItem.setItems(itemService.getItemById(orderItemDto.getItemId()));
+//            inCameItem.setCount(orderItemDto.getCount());
+//            inCameItem.setInCame(inCame);
+//            double itemCount = itemService.getItemById(orderItemDto.getItemId()).getCount();
+//            double count = itemCount + inCameItem.getCount();
+//            inCameService.addInCame(inCame);
+//            Items items = itemService.getItemById(orderItemDto.getItemId());
+//            double priceIn = items.getPriceIn();
+//            double priceOut = items.getPriceOut();
+//            items.setCount(count);
+//            itemService.saveItem(items);
+//            inCameItemService.saveInCameItem(inCameItem);
+//            outComingCash += items.getPriceIn() * inCameItem.getCount();
+//        }
+//        String date = sdf.format(new Date());
+//        SectionCash toSectionCash = sectionCashService.searchByDateAndUserId(date, currentUser.getUser().getId());
+//        double toIncoming = toSectionCash.getIncoming();
+//        double toIncomingSum = toIncoming - outComingCash;
+//        Transfer transfer = new Transfer();
+//        transfer.setFrom(currentUser.getUser());
+//        transfer.setToPeople(peopleByPhone);
+//        transfer.setPrice(outComingCash);
+//        transferService.save(transfer);
+//        double sectionCashOutcoming = toSectionCash.getOutcoming()+outComingCash;
+//        toSectionCash.setIncoming(toIncomingSum);
+//        toSectionCash.setOutcoming(sectionCashOutcoming);
+//        toSectionCash.setDescription(currentUser.getUser().getName() + " Do inCame order");
+//        sectionCashService.save(toSectionCash);
+//
+//        return ResponseEntity.ok("Order successful saved");
+//    }

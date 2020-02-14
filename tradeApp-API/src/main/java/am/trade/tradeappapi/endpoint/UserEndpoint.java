@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.aspectj.lang.reflect.DeclareAnnotation.Kind.Type;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/rest/users")
@@ -89,6 +91,13 @@ public class UserEndpoint {
         userService.registerUser(user);
         return ResponseEntity.ok(user.getId());
     }
+//Register user dto
+//             {"name": "Valod",
+//            "surname": "valodyan",
+//            "login": "valod",
+//            "password": "valod",
+//            "rolesId": [1,2]}
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") int id) {
