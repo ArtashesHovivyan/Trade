@@ -9,12 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterUserDto {
+public class ChangeUserPasswordDto {
 
-    private int id;
-    private String name;
-    private String surname;
-    private String login;
-    private String password;
-    private Integer[] rolesId;
+    private String oldPassword;
+    private String newPassword;
 }

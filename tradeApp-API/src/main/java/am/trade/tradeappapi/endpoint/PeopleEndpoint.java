@@ -1,6 +1,5 @@
 package am.trade.tradeappapi.endpoint;
 
-import am.trade.tradeappcommon.exeption.UserNotFoundExeption;
 import am.trade.tradeappcommon.model.People;
 import am.trade.tradeappcommon.service.PeopleService;
 import org.springframework.http.HttpStatus;

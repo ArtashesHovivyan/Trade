@@ -27,18 +27,5 @@ public class CurrentUserDetailServiceImpl implements UserDetailsService {
         return new CurrentUser(user);
 
     }
-//public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//    User user = userRepository.getUserByLogin(s).orElse(null);
-//    if (user == null) {
-//        throw new UsernameNotFoundException("User not found");
-//    }
-//    return new CurrentUser(user);
-//}
 
-
-//    private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
-//        String[] userRoles = user.getRoles().stream().map((role) -> role.getName()).toArray(String[]::new);
-//        Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
-//        return authorities;
-//    }
 }

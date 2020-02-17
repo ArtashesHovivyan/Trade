@@ -1,6 +1,5 @@
 package am.trade.tradeappapi.endpoint;
 
-import am.trade.tradeappcommon.exeption.CategoryNotFoundExeption;
 import am.trade.tradeappcommon.model.Category;
 import am.trade.tradeappcommon.service.CategoryService;
 import org.springframework.http.HttpStatus;

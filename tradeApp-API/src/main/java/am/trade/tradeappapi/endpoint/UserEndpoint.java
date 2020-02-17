@@ -1,9 +1,7 @@
 package am.trade.tradeappapi.endpoint;
 
-import am.trade.tradeappapi.dto.AuthenticationRequest;
-import am.trade.tradeappapi.dto.AuthenticationResponse;
-import am.trade.tradeappapi.dto.RegisterUserDto;
-import am.trade.tradeappapi.dto.UserDto;
+import am.trade.tradeappapi.dto.*;
+import am.trade.tradeappapi.security.CurrentUser;
 import am.trade.tradeappapi.security.JwtTokenUtil;
 import am.trade.tradeappcommon.exeption.UserNotFoundExeption;
 import am.trade.tradeappcommon.model.Role;
@@ -12,13 +10,12 @@ import am.trade.tradeappcommon.service.RoleService;
 import am.trade.tradeappcommon.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.aspectj.lang.reflect.DeclareAnnotation.Kind.Type;
 
 @RestController
 @CrossOrigin("*")
@@ -98,6 +95,51 @@ public class UserEndpoint {
 //            "password": "valod",
 //            "rolesId": [1,2]}
 
+    @PutMapping
+    public ResponseEntity changeUser(@RequestBody RegisterUserDto registerUserDto) {
+        User updateUser = null;
+        try {
+            updateUser = userService.findById(registerUserDto.getId());
+        User user = new User();
+        user.setId(updateUser.getId());
+        user.setName(registerUserDto.getName());
+        user.setSurname(registerUserDto.getSurname());
+        user.setLogin(registerUserDto.getLogin());
+        user.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
+        List<Role> roleList = new ArrayList<>();
+        for (Integer roleId : registerUserDto.getRolesId()) {
+            Role role = roleService.getRollById(roleId);
+            roleList.add(role);
+        }
+        user.setRoles(roleList);
+        userService.registerUser(user);
+        return ResponseEntity.ok(user.getId());
+        } catch (UserNotFoundExeption userNotFoundExeption) {
+            userNotFoundExeption.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @PutMapping ("/{changePass}")
+    public ResponseEntity changePass(@RequestBody ChangeUserPasswordDto changeUserPasswordDto,
+                                     @AuthenticationPrincipal CurrentUser currentUser) {
+        if (currentUser.getUser() == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }else if (passwordEncoder.matches(changeUserPasswordDto.getOldPassword(),
+                userService.getByLogin(currentUser.getUser().getLogin()).getPassword())){
+            User updateUser = userService.getByLogin(currentUser.getUser().getLogin());
+            User user = new User();
+            user.setId(updateUser.getId());
+            user.setName(currentUser.getUser().getName());
+            user.setSurname(currentUser.getUser().getSurname());
+            user.setLogin(currentUser.getUser().getLogin());
+            user.setRoles(currentUser.getUser().getRoles());
+            user.setPassword(passwordEncoder.encode(changeUserPasswordDto.getNewPassword()));
+            userService.registerUser(user);
+            return ResponseEntity.ok(user.getId());
+        }else { return ResponseEntity.status(HttpStatus.CONFLICT).build();}
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") int id) {
