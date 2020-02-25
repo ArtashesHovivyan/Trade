@@ -5,14 +5,15 @@ import am.trade.tradeappapi.dto.FindOrderDto;
 import am.trade.tradeappapi.dto.ItemMainDto;
 import am.trade.tradeappapi.dto.OrderItemDto;
 import am.trade.tradeappapi.security.CurrentUser;
-import am.trade.tradeappcommon.model.*;
+import am.trade.tradeappcommon.model.Items;
+import am.trade.tradeappcommon.model.Order;
+import am.trade.tradeappcommon.model.OrderItem;
 import am.trade.tradeappcommon.service.ItemService;
 import am.trade.tradeappcommon.service.OrderItemService;
 import am.trade.tradeappcommon.service.OrderService;
 import am.trade.tradeappcommon.service.PeopleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -47,9 +47,18 @@ public class OrderEndpoint {
         order.setPeople(peopleService.getPeopleByPhone(addOrderDto.getPhoneNumber()));
         for (OrderItemDto orderItemDto : addOrderDto.getOrderItemDtos()) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setItems(itemService.getItemById(orderItemDto.getItemId()));
-            orderItem.setCount(orderItemDto.getCount());
             orderItem.setOrder(order);
+            Items itemById = itemService.getItemById(orderItemDto.getItemId());
+            orderItem.setTitle(itemById.getTitle());
+            orderItem.setDescription(itemById.getDescription());
+            orderItem.setCount(orderItemDto.getCount());
+            orderItem.setCategoryName(itemById.getCategory().getName());
+            orderItem.setPriceIn(itemById.getPriceIn());
+            if ((orderItemDto.getPriceOut() == 0.0)) {
+                orderItem.setPriceOut(itemById.getPriceOut());
+            } else {
+                orderItem.setPriceOut(orderItemDto.getPriceOut());
+            }
             double itemCount = itemService.getItemById(orderItemDto.getItemId()).getCount();
             double differenceCount = itemCount - orderItem.getCount();
             if (itemCount >= orderItemDto.getCount()) {
@@ -66,18 +75,20 @@ public class OrderEndpoint {
     }
 
 //    -----saveOrder - JSON-----
-//    {
-//        "phoneNumber": "093-987456",
+//{ {
+//    "phoneNumber": "093-987456",
 //            "orderItemDtos": [
-//        {
-//            "itemId": "4",
-//                "count": "10"
-//        },
-//        {
-//            "itemId": "2",
-//                "count": "5"
-//        }]
-//    }
+//    {
+//        "itemId": "10",
+//            "count": "1",
+//            "priceOut": "1200"
+//    },
+//    {
+//        "itemId": "2",
+//            "count": "2",
+//            "priceOut": "0"
+//    }]
+//}
 
     @GetMapping
     public List<Order> allOrders() {
@@ -100,12 +111,12 @@ public class OrderEndpoint {
             double orderItemSum = 0.0;
             for (OrderItem orderItem : byOrderId) {
                 ItemMainDto itemMainDto = new ItemMainDto();
-                itemMainDto.setId(orderItem.getItems().getId());
+                itemMainDto.setId(orderItem.getId());
                 itemMainDto.setCount(orderItem.getCount());
-                itemMainDto.setTitle(orderItem.getItems().getTitle());
-                itemMainDto.setPriceOut(orderItem.getItems().getPriceOut());
+                itemMainDto.setTitle(orderItem.getTitle());
+                itemMainDto.setPriceOut(orderItem.getPriceOut());
                 itemMainDtoList.add(itemMainDto);
-                orderItemSum += orderItem.getItems().getPriceOut() * orderItem.getCount();
+                orderItemSum += orderItem.getPriceOut() * orderItem.getCount();
             }
 //            Ապրանքի լիստ վերջ
             orderSum += orderItemSum;
@@ -113,6 +124,7 @@ public class OrderEndpoint {
             findOrderDto.setDate(order.getDate());
             findOrderDto.setItemMainDtos(itemMainDtoList);
             findOrderDto.setOrderSum(orderSum);
+            findOrderDto.setPeople(order.getPeople());
             findOrderDtoList.add(findOrderDto);
         }
         return ResponseEntity.ok(findOrderDtoList);

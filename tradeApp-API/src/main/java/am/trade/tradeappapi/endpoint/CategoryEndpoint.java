@@ -1,6 +1,5 @@
 package am.trade.tradeappapi.endpoint;
 
-import am.trade.tradeappcommon.exeption.CategoryNotFoundExeption;
 import am.trade.tradeappcommon.model.Category;
 import am.trade.tradeappcommon.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ public class CategoryEndpoint {
     }
 
     @GetMapping
-//    @PreAuthorize(value = "hasAuthority('ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN')")
     public List<Category> categories() {
         return categoryService.findAll();
     }
@@ -36,7 +35,7 @@ public class CategoryEndpoint {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize(value = "hasAuthority('VIEW_All_USERS')")
+//    @PreAuthorize(value = "hasAuthority('VIEW_All_USERS')")
     public ResponseEntity getCategoryById(@PathVariable("id") int id) {
         if (categoryService.findCategoryById(id) != null) {
             return ResponseEntity.ok(categoryService.findCategoryById(id));

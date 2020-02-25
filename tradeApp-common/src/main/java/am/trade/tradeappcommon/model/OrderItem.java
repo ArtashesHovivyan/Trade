@@ -19,10 +19,17 @@ public class OrderItem {
     @Column
     private int id;
     @ManyToOne
-    @JoinColumn(name = "item_id")
-    private Items items;
-    @ManyToOne
     private Order order;
     @Column
+    private String title;
+    @Column
+    private String description;
+    @Column
     private double count;
+    @Column
+    private String categoryName;
+    @Column
+    private double priceIn;
+    @Column
+    private double priceOut;
 }

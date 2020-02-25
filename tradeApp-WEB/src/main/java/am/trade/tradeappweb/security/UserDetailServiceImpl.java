@@ -1,4 +1,4 @@
-package am.trade.tradeappapi.security;
+package am.trade.tradeappweb.security;
 
 import am.trade.tradeappcommon.model.User;
 import am.trade.tradeappcommon.repository.UserRepository;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class CurrentUserDetailServiceImpl implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -23,5 +23,4 @@ public class CurrentUserDetailServiceImpl implements UserDetailsService {
         return new CurrentUser(user);
 
     }
-
 }

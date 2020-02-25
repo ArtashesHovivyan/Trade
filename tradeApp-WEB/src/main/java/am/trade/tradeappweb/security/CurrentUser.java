@@ -1,11 +1,13 @@
-package am.trade.tradeappapi.security;
+package am.trade.tradeappweb.security;
 
 import am.trade.tradeappcommon.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.Collection;
 
+@Data
 public class CurrentUser extends org.springframework.security.core.userdetails.User {
 
     private User user;

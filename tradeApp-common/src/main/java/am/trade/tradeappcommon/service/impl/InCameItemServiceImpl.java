@@ -5,6 +5,8 @@ import am.trade.tradeappcommon.repository.InCameItemRepository;
 import am.trade.tradeappcommon.service.InCameItemService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class InCameItemServiceImpl implements InCameItemService {
@@ -18,5 +20,11 @@ public class InCameItemServiceImpl implements InCameItemService {
     @Override
     public void saveInCameItem(InCameItem inCameItem) {
         inCameItemRepository.save(inCameItem);
+    }
+
+    @Override
+    public List<InCameItem> findByInCameId(int id) {
+        List<InCameItem> allInCameItems = inCameItemRepository.findByInCameId(id);
+        return allInCameItems;
     }
 }

@@ -1,4 +1,4 @@
-package am.trade.tradeappapi.dto;
+package am.trade.tradeappweb.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +12,4 @@ import lombok.NoArgsConstructor;
 public class OrderItemDto {
     private int itemId;
     private double count;
-    private double priceIn;
-    private double priceOut;
 }

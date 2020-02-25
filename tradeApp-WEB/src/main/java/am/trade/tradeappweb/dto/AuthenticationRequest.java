@@ -1,4 +1,4 @@
-package am.trade.tradeappapi.dto;
+package am.trade.tradeappweb.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterUserDto {
+public class AuthenticationRequest {
 
-    private int id;
-    private String name;
-    private String surname;
     private String login;
     private String password;
-    private Integer[] rolesId;
+
 }

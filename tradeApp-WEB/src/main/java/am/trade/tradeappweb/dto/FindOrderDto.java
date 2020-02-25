@@ -1,6 +1,5 @@
-package am.trade.tradeappapi.dto;
+package am.trade.tradeappweb.dto;
 
-import am.trade.tradeappcommon.model.Items;
 import am.trade.tradeappcommon.model.People;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +15,10 @@ import java.util.List;
 @Builder
 public class FindOrderDto {
 
+    private int id;
     private Date date;
     private List<ItemMainDto> itemMainDtos;
     private double orderSum;
     private People people;
+    private UserDto userDto;
 }

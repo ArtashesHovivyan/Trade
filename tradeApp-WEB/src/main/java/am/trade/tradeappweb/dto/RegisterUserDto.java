@@ -1,4 +1,4 @@
-package am.trade.tradeappapi.dto;
+package am.trade.tradeappweb.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
