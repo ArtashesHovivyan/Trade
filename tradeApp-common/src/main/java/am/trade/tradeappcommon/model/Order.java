@@ -28,11 +28,4 @@ public class Order {
     @ManyToOne
     private People people;
 
-//    @ManyToMany(cascade = {CascadeType.ALL})
-//    @JoinTable(
-//            name = "order_item",
-//            joinColumns = {@JoinColumn(name = "order_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "item_id")}
-//    )
-//    List<Items> itemsList = new ArrayList<>();
 }

@@ -12,7 +12,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> findAllByUserId(int userId);
 
-    @Query(value = "SELECT * FROM orders a WHERE date BETWEEN :toDate AND :fromDate + interval 1 day", nativeQuery = true)
+    @Query(value = "SELECT * FROM orders WHERE date BETWEEN :toDate AND :fromDate + interval 1 day", nativeQuery = true)
     List<Order> searchByDateRange(
             @Param("toDate") Date toDateTime,
             @Param("fromDate") Date fromDateTime);

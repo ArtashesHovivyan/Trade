@@ -54,7 +54,11 @@ public class OrderEndpoint {
             orderItem.setCount(orderItemDto.getCount());
             orderItem.setCategoryName(itemById.getCategory().getName());
             orderItem.setPriceIn(itemById.getPriceIn());
-            orderItem.setPriceOut(itemById.getPriceOut());
+            if ((orderItemDto.getPriceOut() == 0.0)) {
+                orderItem.setPriceOut(itemById.getPriceOut());
+            } else {
+                orderItem.setPriceOut(orderItemDto.getPriceOut());
+            }
             double itemCount = itemService.getItemById(orderItemDto.getItemId()).getCount();
             double differenceCount = itemCount - orderItem.getCount();
             if (itemCount >= orderItemDto.getCount()) {
@@ -71,18 +75,20 @@ public class OrderEndpoint {
     }
 
 //    -----saveOrder - JSON-----
-//    {
-//        "phoneNumber": "093-987456",
+//{ {
+//    "phoneNumber": "093-987456",
 //            "orderItemDtos": [
-//        {
-//            "itemId": "4",
-//                "count": "10"
-//        },
-//        {
-//            "itemId": "2",
-//                "count": "5"
-//        }]
-//    }
+//    {
+//        "itemId": "10",
+//            "count": "1",
+//            "priceOut": "1200"
+//    },
+//    {
+//        "itemId": "2",
+//            "count": "2",
+//            "priceOut": "0"
+//    }]
+//}
 
     @GetMapping
     public List<Order> allOrders() {

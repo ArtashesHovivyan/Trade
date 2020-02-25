@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/rest/income")
@@ -52,14 +53,21 @@ public class InCameEndpoint {
             inCameItem.setDescription(items.getDescription());
             inCameItem.setCount(orderItemDto.getCount());
             inCameItem.setCategoryName(items.getCategory().getName());
-            inCameItem.setPriceIn(items.getPriceIn());
-            inCameItem.setPriceOut(items.getPriceOut());
-
+            if ((orderItemDto.getPriceIn() == 0.0)) {
+                inCameItem.setPriceIn(items.getPriceIn());
+            } else {
+                items.setPriceIn(orderItemDto.getPriceIn());
+                inCameItem.setPriceIn(orderItemDto.getPriceIn());
+            }
+            if ((orderItemDto.getPriceOut() == 0.0)) {
+                inCameItem.setPriceOut(items.getPriceOut());
+            } else {
+                items.setPriceOut(orderItemDto.getPriceOut());
+                inCameItem.setPriceOut(orderItemDto.getPriceOut());
+            }
             double itemCount = items.getCount();
             double count = itemCount + inCameItem.getCount();
             inCameService.addInCame(inCame);
-//            double priceIn = items.getPriceIn();
-//            double priceOut = items.getPriceOut();
             items.setCount(count);
             itemService.saveItem(items);
             inCameItemService.saveInCameItem(inCameItem);
@@ -74,7 +82,7 @@ public class InCameEndpoint {
         transfer.setToPeople(peopleByPhone);
         transfer.setPrice(outComingCash);
         transferService.save(transfer);
-        double sectionCashOutcoming = toSectionCash.getOutcoming()+outComingCash;
+        double sectionCashOutcoming = toSectionCash.getOutcoming() + outComingCash;
         toSectionCash.setIncoming(toIncomingSum);
         toSectionCash.setOutcoming(sectionCashOutcoming);
         toSectionCash.setDescription(currentUser.getUser().getName() + " Do inCame order");
@@ -84,18 +92,22 @@ public class InCameEndpoint {
     }
 
 //    -----saveOrder - JSON-----
+//{
+//    "phoneNumber": "093-987456",
+//        "orderItemDtos": [
 //    {
-//        "phoneNumber": "093-987456",
-//            "orderItemDtos": [
-//        {
-//            "itemId": "4",
-//                "count": "10"
-//        },
-//        {
-//            "itemId": "2",
-//                "count": "5"
-//        }]
-//    }
+//        "itemId": "10",
+//            "count": "1",
+//            "priceOut": "300",
+//            "priceIn": "100"
+//    },
+//    {
+//        "itemId": "2",
+//            "count": "2",
+//            "priceOut": "2000",
+//            "priceIn": "0"
+//    }]
+//}
 
     @GetMapping
     public List<InCame> allInCame() {
